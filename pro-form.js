@@ -16,10 +16,7 @@ var ProForm = Class.create({
 		this.id = this.props.id;
 	},
 	
-	/**
-	 * Used to generate input elements
-	 */
-	_input: function(type, name, options){
+	_buildOptions: function(options){
 		var options = Object.extend({
 			id: name,
 			name: name,
@@ -27,6 +24,14 @@ var ProForm = Class.create({
 			className: '',
 			label: true
 		}, options || {});
+		return options;
+	},
+	
+	/**
+	 * Used to generate input elements
+	 */
+	_input: function(type, name, options){
+		var options = this._buildOptions(options);
 		
 		var input = new Element('input', {
 			type: type,
@@ -37,7 +42,7 @@ var ProForm = Class.create({
 		});
 		
 		if(options.label){
-			this.label(name, options.label);
+			this._label(name, options.label);
 		}
 		
 		this.form.insert(input);			
@@ -56,13 +61,7 @@ var ProForm = Class.create({
 	},
 	
 	textarea: function(name, options){
-		var options = Object.extend({
-			id: name,
-			name: name,
-			value: '',
-			className: '',
-			label: false				
-		}, options || {});
+		var options = this._buildOptions(options);
 		
 		var textarea = new Element('textarea', {
 			id: options.id,
@@ -73,7 +72,7 @@ var ProForm = Class.create({
 		textarea.update(options.value);
 		
 		if(options.label){
-			this.label(name, options.label);
+			this._label(name, options.label);
 		}
 		
 		this.form.insert(textarea);
@@ -85,7 +84,7 @@ var ProForm = Class.create({
 		return this;			
 	},
 	
-	label: function(forElem, label){
+	_label: function(forElem, label){
 		
 		if(label === true){
 			var label = this.options.labelMaker(forElem);
