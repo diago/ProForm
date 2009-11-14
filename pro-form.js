@@ -22,7 +22,6 @@ var ProForm = Class.create({
 			id: name,
 			name: name,
 			value: '',
-			className: '',
 			label: true
 		}, options || {});
 		
@@ -48,15 +47,15 @@ var ProForm = Class.create({
 		this.form.insert(input);			
 	},
 	
-	hidden: function(name, options){
-		this.form.insert(this._input('hidden', name, options));			
+	hidden: function(name, value){
+		this._input('hidden', name, {value: value, label: false});			
 		return this;			
 	},
 	/**
 	 * an input text
 	 */
 	text: function(name, options){
-		this.form.insert(this._input('text', name, options));			
+		this._input('text', name, options);			
 		return this;
 	},
 	
