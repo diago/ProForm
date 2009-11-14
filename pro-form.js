@@ -14,6 +14,7 @@ var ProForm = Class.create({
 		
 		this.form = new Element('form', this.props);
 		this.id = this.props.id;
+		this.set = false;
 	},
 	
 	_buildOptions: function(name, options){
@@ -54,8 +55,21 @@ var ProForm = Class.create({
 	 * an input text
 	 */
 	text: function(name, options){
-		this.form.insert(this._input('text', name, options));			
+		this._insert(this._input('text', name, options));			
 		return this;
+	},
+	
+	checkbox: function(name, options){
+		var name = name + '[]';
+
+		this._insert(this._input('checkbox' ,name, options));
+
+		return this;
+	},
+	
+	radio: function(name, options){
+		this._insert(this._input('radio', name, options));			
+		return this;		
 	},
 	
 	textarea: function(name, options){
@@ -67,13 +81,25 @@ var ProForm = Class.create({
 		
 		var textarea = new Element('textarea', options);
 		
-		this.form.insert(textarea.setValue(value));
+		this._insert(textarea.setValue(value));
 		return this;
 	},		
 	
 	submit: function(name, options){
-		this.form.insert(this._input('submit', name, options));
+		this._insert(this._input('submit', name, options));
 		return this;			
+	},
+	
+	fieldset: function(text, options){
+		if(text === false){
+			this.form.insert(this.set);
+			this.set = false;
+			return this;
+		}
+		this.set = new Element('fieldset', options || {});
+		var legend = new Element('legend');
+		this.set.insert(legend.update(text));
+		return this;
 	},
 	
 	_label: function(forElem, label){
@@ -87,11 +113,19 @@ var ProForm = Class.create({
 		});
 		
 		l.update(label);
-		
-		this.form.insert(l);
-		
-		return this;
+
+		this._insert(l);
+
 	},
+	
+	_insert: function(item){
+		if(this.set){
+			this.set.insert(item);
+		} else {
+			this.form.insert(item);
+		}
+	},
+	
 	/**
 	 * Returns the full form
 	 */
