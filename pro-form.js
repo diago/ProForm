@@ -1,10 +1,10 @@
 var ProForm = Class.create({
-	initialize: function(name, props, options){
-		this.props = Object.extend({
+	initialize: function(name, attr, options){
+		this.attr = Object.extend({
 			id: name,
 			action: '',
 			method: 'post'
-		}, props || {});
+		}, attr || {});
 		
 		this.options = Object.extend({
 			labelMaker: function(str){
@@ -12,37 +12,37 @@ var ProForm = Class.create({
 			}
 		}, options || {});		
 		
-		this.form = new Element('form', this.props);
-		this.id = this.props.id;
+		this.form = new Element('form', this.attr);
+		this.id = this.attr.id;
 		this.set = false;
 	},
 	
-	_buildOptions: function(name, options){
+	_buildAttr: function(name, attr){
 		
-		var options = Object.extend({
+		var attr = Object.extend({
 			id: name,
 			name: name,
 			value: '',
 			label: true
-		}, options || {});
+		}, attr || {});
 		
-		var label = options.label;
-		delete options.label;
+		var label = attr.label;
+		delete attr.label;
 		if(label){
-			this._label(options.id, label);
+			this._label(attr.id, label);
 		}
 		
-		return options;
+		return attr;
 	},
 	
 	/**
 	 * Used to generate input elements
 	 */
-	_input: function(type, name, options){
+	_input: function(type, name, attr){
 		
-		var input = new Element('input', this._buildOptions(name, Object.extend({
+		var input = new Element('input', this._buildAttr(name, Object.extend({
 			type: type
-		}, options)));
+		}, attr)));
 		
 		return input;			
 	},
@@ -54,49 +54,49 @@ var ProForm = Class.create({
 	/**
 	 * an input text
 	 */
-	text: function(name, options){
-		this._insert(this._input('text', name, options));			
+	text: function(name, attr){
+		this._insert(this._input('text', name, attr));			
 		return this;
 	},
 	
-	checkbox: function(name, options){
+	checkbox: function(name, attr){
 		var name = name + '[]';
 
-		this._insert(this._input('checkbox' ,name, options));
+		this._insert(this._input('checkbox' ,name, attr));
 
 		return this;
 	},
 	
-	radio: function(name, options){
-		this._insert(this._input('radio', name, options));			
+	radio: function(name, attr){
+		this._insert(this._input('radio', name, attr));			
 		return this;		
 	},
 	
-	textarea: function(name, options){
+	textarea: function(name, attr){
 
-		var options = this._buildOptions(name, options);
+		var attr = this._buildAttr(name, attr);
 		
-		var value = options.value;
-		delete options.value;
+		var value = attr.value;
+		delete attr.value;
 		
-		var textarea = new Element('textarea', options);
+		var textarea = new Element('textarea', attr);
 		
 		this._insert(textarea.setValue(value));
 		return this;
 	},		
 	
-	submit: function(name, options){
-		this._insert(this._input('submit', name, options));
+	submit: function(name, attr){
+		this._insert(this._input('submit', name, attr));
 		return this;			
 	},
 	
-	fieldset: function(text, options){
+	fieldset: function(text, attr){
 		if(text === false){
 			this.form.insert(this.set);
 			this.set = false;
 			return this;
 		}
-		this.set = new Element('fieldset', options || {});
+		this.set = new Element('fieldset', attr || {});
 		var legend = new Element('legend');
 		this.set.insert(legend.update(text));
 		return this;
