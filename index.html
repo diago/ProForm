@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <title>Form Filler</title>
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
+		<script type="text/javascript" src="pro-form.js"></script>
+		<script type="text/javascript">
+
+			document.observe('dom:loaded', function(){
+			    var myForm = new ProForm('myForm').text('first_name');
+
+			    $$('body')[0].insert(myForm.get());
+			});
+		</script>
+    </head>
+	<body>
+
+	
+	
+	</body>
+</html>
