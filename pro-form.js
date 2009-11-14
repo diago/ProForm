@@ -16,7 +16,8 @@ var ProForm = Class.create({
 		this.id = this.props.id;
 	},
 	
-	_buildOptions: function(options){
+	_buildOptions: function(name, options){
+		
 		var options = Object.extend({
 			id: name,
 			name: name,
@@ -24,26 +25,25 @@ var ProForm = Class.create({
 			className: '',
 			label: true
 		}, options || {});
-		return options;
+		
+		var optionsHash = $H(options);
+		
+		var label = optionsHash.unset('label');
+		if(label){
+			this._label(options.id, label);
+		}
+		
+		return optionsHash.toObject();
 	},
 	
 	/**
 	 * Used to generate input elements
 	 */
 	_input: function(type, name, options){
-		var options = this._buildOptions(options);
 		
-		var input = new Element('input', {
-			type: type,
-			id: options.id,
-			name: options.name,
-			value: options.value,
-			'class': options.className
-		});
-		
-		if(options.label){
-			this._label(name, options.label);
-		}
+		var input = new Element('input', this._buildOptions(name, Object.extend({
+			type: type
+		}, options)));
 		
 		this.form.insert(input);			
 	},
@@ -61,19 +61,8 @@ var ProForm = Class.create({
 	},
 	
 	textarea: function(name, options){
-		var options = this._buildOptions(options);
 		
-		var textarea = new Element('textarea', {
-			id: options.id,
-			name: options.name,
-			'class': options.className
-		});
-		
-		textarea.update(options.value);
-		
-		if(options.label){
-			this._label(name, options.label);
-		}
+		var textarea = new Element('textarea', this._buildOptions(name, options));
 		
 		this.form.insert(textarea);
 		return this;
@@ -111,10 +100,6 @@ var ProForm = Class.create({
 	 * Prototype form.request()
 	 */
 	request: function(options){
-		var options = Object.extend(
-			Outland.requestDefaults
-		, options || {});
-		
 		this.sentRequest = this.form.request(options);
 		return this;
 	}
