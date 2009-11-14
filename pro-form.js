@@ -7,7 +7,9 @@ var ProForm = Class.create({
 		}, props || {});
 		
 		this.options = Object.extend({
-	
+			labelMaker: function(str){
+				return str.gsub('_', ' ').ucwords() + ': ';
+			}
 		}, options || {});		
 		
 		this.form = new Element('form', this.props);
@@ -23,7 +25,7 @@ var ProForm = Class.create({
 			name: name,
 			value: '',
 			className: '',
-			label: false
+			label: true
 		}, options || {});
 		
 		var input = new Element('input', {
@@ -85,6 +87,10 @@ var ProForm = Class.create({
 	
 	label: function(forElem, label){
 		
+		if(label === true){
+			var label = this.options.labelMaker(forElem);
+		}
+		
 		var l = new Element('label', {
 			'for': forElem
 		});
@@ -114,3 +120,27 @@ var ProForm = Class.create({
 		return this;
 	}
 });
+
+
+Object.extend(String.prototype, (function(){
+	
+	function ucwords(){
+		var str = this;
+	    // Uppercase the first character of every word in a string  
+	    // 
+	    // version: 909.322
+	    // discuss at: http://phpjs.org/functions/ucwords
+	    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+	    // +   improved by: Waldo Malqui Silva
+	    // +   bugfixed by: Onno Marsman
+	    // *     example 1: ucwords('kevin van zonneveld');
+	    // *     returns 1: 'Kevin Van Zonneveld'
+	    // *     example 2: ucwords('HELLO WORLD');
+	    // *     returns 2: 'HELLO WORLD'
+	    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase( ); } );
+	}
+	
+	return {
+		ucwords: ucwords
+	}
+})());
