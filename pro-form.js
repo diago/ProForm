@@ -25,14 +25,13 @@ var ProForm = Class.create({
 			label: true
 		}, options || {});
 		
-		var optionsHash = $H(options);
-		
-		var label = optionsHash.unset('label');
+		var label = options.label;
+		delete options.label;
 		if(label){
 			this._label(options.id, label);
 		}
 		
-		return optionsHash.toObject();
+		return options;
 	},
 	
 	/**
@@ -44,26 +43,31 @@ var ProForm = Class.create({
 			type: type
 		}, options)));
 		
-		this.form.insert(input);			
+		return input;			
 	},
 	
 	hidden: function(name, value){
-		this._input('hidden', name, {value: value, label: false});			
+		this.form.insert(this._input('hidden', name, {value: value, label: false}));			
 		return this;			
 	},
 	/**
 	 * an input text
 	 */
 	text: function(name, options){
-		this._input('text', name, options);			
+		this.form.insert(this._input('text', name, options));			
 		return this;
 	},
 	
 	textarea: function(name, options){
+
+		var options = this._buildOptions(name, options);
 		
-		var textarea = new Element('textarea', this._buildOptions(name, options));
+		var value = options.value;
+		delete options.value;
 		
-		this.form.insert(textarea);
+		var textarea = new Element('textarea', options);
+		
+		this.form.insert(textarea.setValue(value));
 		return this;
 	},		
 	
