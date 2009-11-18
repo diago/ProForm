@@ -175,6 +175,15 @@ var ProForm = Class.create({
 	},
 	
 	/**
+	 * Inserts the form into the passed in element
+	 */
+	insert: function(elem){
+		var pos = 'bottom';
+		$(elem).insert(this.form);
+		return this;
+	},
+	
+	/**
 	 * Prototype form.request()
 	 */
 	request: function(options){
@@ -183,36 +192,27 @@ var ProForm = Class.create({
 	}
 });
 
-
-Object.extend(String.prototype, (function(){
-	
-	function ucwords(){
-		var str = this;
-	    // Uppercase the first character of every word in a string  
-	    // 
-	    // version: 909.322
-	    // discuss at: http://phpjs.org/functions/ucwords
-	    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
-	    // +   improved by: Waldo Malqui Silva
-	    // +   bugfixed by: Onno Marsman
-	    // *     example 1: ucwords('kevin van zonneveld');
-	    // *     returns 1: 'Kevin Van Zonneveld'
-	    // *     example 2: ucwords('HELLO WORLD');
-	    // *     returns 2: 'HELLO WORLD'
-	    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase( ); } );
-	}
-	
-	function defined(){
-		return !(typeof this == "undefined");
-	}
-	
-	function type(){
-		return typeof this;
-	}
-	
-	return {
-		ucwords: ucwords,
-		defined: defined,
-		type: type
-	};
-})());
+if(!Object.isFunction('ucwords')){
+	Object.extend(String.prototype, (function(){
+		
+		function ucwords(){
+			var str = this;
+		    // Uppercase the first character of every word in a string  
+		    // 
+		    // version: 909.322
+		    // discuss at: http://phpjs.org/functions/ucwords
+		    // +   original by: Jonas Raoni Soares Silva (http://www.jsfromhell.com)
+		    // +   improved by: Waldo Malqui Silva
+		    // +   bugfixed by: Onno Marsman
+		    // *     example 1: ucwords('kevin van zonneveld');
+		    // *     returns 1: 'Kevin Van Zonneveld'
+		    // *     example 2: ucwords('HELLO WORLD');
+		    // *     returns 2: 'HELLO WORLD'
+		    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase( ); } );
+		}
+		
+		return {
+			ucwords: ucwords
+		};
+	})());
+}
