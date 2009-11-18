@@ -17,36 +17,6 @@ var ProForm = Class.create({
 		this.set = false;
 	},
 	
-	_buildAttr: function(name, attr){
-		
-		var attr = Object.extend({
-			id: name,
-			name: name,
-			value: '',
-			label: true
-		}, attr || {});
-		
-		var label = attr.label;
-		delete attr.label;
-		if(label){
-			this._label(attr.id, label);
-		}
-		
-		return attr;
-	},
-	
-	/**
-	 * Used to generate input elements
-	 */
-	_input: function(type, name, attr){
-		
-		var input = new Element('input', this._buildAttr(name, Object.extend({
-			type: type
-		}, attr)));
-		
-		return input;			
-	},
-	
 	hidden: function(name, value){
 		this.form.insert(this._input('hidden', name, {value: value, label: false}));			
 		return this;			
@@ -85,6 +55,23 @@ var ProForm = Class.create({
 		return this;
 	},		
 	
+	select: function(name, options, attr){
+		var attr = this._buildAttr(name, attr);
+		delete attr.value; // no value for selects
+		
+		var select = new Element('select', attr);
+		var option;
+		for(x in options){
+			option = new Element('option',{
+				value: options[x][0] || options[x],
+				selected: options[x][1] || false
+			});
+			select.insert(option.update(x));
+		}
+		this._insert(select);
+		return this;
+	},
+	
 	submit: function(name, attr){
 		this._insert(this._input('submit', name, attr));
 		return this;			
@@ -100,6 +87,36 @@ var ProForm = Class.create({
 		var legend = new Element('legend');
 		this.set.insert(legend.update(text));
 		return this;
+	},
+
+	_buildAttr: function(name, attr){
+		
+		var attr = Object.extend({
+			id: name,
+			name: name,
+			value: '',
+			label: true
+		}, attr || {});
+		
+		var label = attr.label;
+		delete attr.label;
+		if(label){
+			this._label(attr.id, label);
+		}
+		
+		return attr;
+	},
+	
+	/**
+	 * Used to generate input elements
+	 */
+	_input: function(type, name, attr){
+		
+		var input = new Element('input', this._buildAttr(name, Object.extend({
+			type: type
+		}, attr)));
+		
+		return input;			
 	},
 	
 	_label: function(forElem, label){
@@ -161,7 +178,17 @@ Object.extend(String.prototype, (function(){
 	    return (str+'').replace(/^(.)|\s(.)/g, function ( $1 ) { return $1.toUpperCase( ); } );
 	}
 	
-	return {
-		ucwords: ucwords
+	function defined(){
+		return !(typeof this == "undefined");
 	}
+	
+	function type(){
+		return typeof this;
+	}
+	
+	return {
+		ucwords: ucwords,
+		defined: defined,
+		type: type
+	};
 })());
