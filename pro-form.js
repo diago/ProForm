@@ -29,11 +29,35 @@ var ProForm = Class.create({
 		return this;
 	},
 	
-	checkbox: function(name, attr){
+	checkbox: function(name, boxes, attr){
 		var name = name + '[]';
-
-		this._insert(this._input('checkbox' ,name, attr));
-
+		
+		if( Object.isString(boxes) ){
+			
+			var attr = Object.extend({id: boxes, value: boxes}, attr || {});
+			
+		} else if( Object.isArray(boxes) ){
+			name = name.gsub('[]', '');
+			for(i=0;i<boxes.length;i++){
+				
+				if(Object.isString(boxes[i])){
+					this.checkbox(name, boxes[i]);
+				} else {
+					for(x in boxes[i]){
+						this.checkbox(name, x, {checked: boxes[i][x]});
+					}
+				}
+				
+			}
+			return this;
+			
+		} else {
+			
+			var attr = Object.extend(boxes, attr || {});
+			
+		}
+			
+		this._insert(this._input('checkbox', name, attr));
 		return this;
 	},
 	
