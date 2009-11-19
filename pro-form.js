@@ -25,6 +25,9 @@ var ProForm = Class.create({
 	 * an input text
 	 */
 	text: function(name, attr){
+		if(Object.isString(attr)){
+			var attr = {value: attr};
+		}
 		this._insert(this._input('text', name, attr));			
 		return this;
 	},
@@ -117,7 +120,17 @@ var ProForm = Class.create({
 	},
 	
 	submit: function(name, attr){
-		this._insert(this._input('submit', name, attr));
+		this._insert(this._input('submit', name, this._buildButton(name, attr)));
+		return this;			
+	},
+	
+	reset: function(name, attr){
+		this._insert(this._input('reset', name, this._buildButton(name, attr)));
+		return this;			
+	},
+
+	button: function(name, attr){		
+		this._insert(this._input('button', name, this._buildButton(name, attr)));
 		return this;			
 	},
 	
@@ -133,6 +146,18 @@ var ProForm = Class.create({
 		return this;
 	},
 
+	_buildButton: function(name, attr){
+		var buttonAttr;
+		if(Object.isUndefined(attr)){
+			buttonAttr = {label: false, value: name.ucwords()};			
+		} else if(Object.isString(attr)){
+			buttonAttr = {value: attr, label: false};
+		} else {
+			buttonAttr = Object.extend({label: false, value: name.ucwords()}, attr || {});				
+		}	
+		return buttonAttr;
+	},
+	
 	_buildAttr: function(name, attr){
 		
 		var attr = Object.extend({
