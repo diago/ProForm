@@ -61,7 +61,27 @@ var ProForm = Class.create({
 		return this;
 	},
 	
-	radio: function(name, attr){
+	radio: function(name, radios, attr){
+		
+		if(Object.isString(radios)){
+		
+			var attr = Object.extend({id: radios, value: radios}, attr || {});
+			
+		} else if(Object.isArray(radios)){
+		
+			for(i=0;i<radios.length;i++){
+				
+				this.radio(name, radios[i], attr);
+				
+			}			
+			return this;
+
+		} else { // It's an Object
+
+			var attr = Object.extend(radios, attr || {});
+			
+		}
+		
 		this._insert(this._input('radio', name, attr));			
 		return this;		
 	},
