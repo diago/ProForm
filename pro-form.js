@@ -178,7 +178,6 @@ var ProForm = Class.create({
 	 * Inserts the form into the passed in element
 	 */
 	insert: function(elem){
-		var pos = 'bottom';
 		$(elem).insert(this.form);
 		return this;
 	},
