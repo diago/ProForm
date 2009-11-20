@@ -35,7 +35,7 @@ var ProForm = (function(){
 		 */
 		insert: function(elem){
 			$(elem).insert(this.form);
-			return this;
+			return this.form;
 		},
 		
 		/**
@@ -63,10 +63,10 @@ var ProForm = (function(){
 		
 		checkbox: function(name, boxes, attr){
 			var name = name + '[]';
-			
+			var attr;
 			if( Object.isString(boxes) ){
 				
-				var attr = Object.extend({id: boxes, value: boxes}, attr || {});
+				attr = Object.extend({id: boxes, value: boxes}, attr || {});
 				
 			} else if( Object.isArray(boxes) ){
 				name = name.gsub('[]', '');
@@ -85,7 +85,7 @@ var ProForm = (function(){
 				
 			} else {
 				
-				var attr = Object.extend(boxes, attr || {});
+				attr = Object.extend(boxes, attr || {});
 				
 			}
 				
@@ -94,10 +94,10 @@ var ProForm = (function(){
 		},
 		
 		radio: function(name, radios, attr){
-			
+			var attr;
 			if(Object.isString(radios)){
 			
-				var attr = Object.extend({id: radios, value: radios}, attr || {});
+				attr = Object.extend({id: radios, value: radios}, attr || {});
 				
 			} else if(Object.isArray(radios)){
 			
@@ -110,7 +110,7 @@ var ProForm = (function(){
 	
 			} else { // It's an Object
 	
-				var attr = Object.extend(radios, attr || {});
+				attr = Object.extend(radios, attr || {});
 				
 			}
 			
@@ -263,7 +263,7 @@ var ProForm = (function(){
 			
 			var input = new Element('input', this._buildAttr(name, Object.extend({
 				type: type
-			}, attr)));
+			}, attr || {})));
 			
 			return input;			
 		},
@@ -297,6 +297,8 @@ var ProForm = (function(){
 	return ProForm;
 	
 })(); 
+
+
 if(!Object.isFunction('ucwords')){
 	Object.extend(String.prototype, (function(){
 		
