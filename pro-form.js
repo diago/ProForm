@@ -107,16 +107,67 @@ var ProForm = Class.create({
 		delete attr.value; // no value for selects
 		
 		var select = new Element('select', attr);
-		var option;
-		for(x in options){
-			option = new Element('option',{
-				value: options[x][0] || options[x],
-				selected: options[x][1] || false
-			});
-			select.insert(option.update(x));
+		
+		var allOptions = this._buildOptions(options);
+		for(i=0;i<allOptions.length;i++){
+			select.insert(allOptions[i]);
 		}
+		
 		this._insert(select);
 		return this;
+	},
+	
+	_buildOptions: function(options){
+		var allOptions = [];
+		var newOptions; 
+		if(Object.isArray(options)){
+			for(i=0;i<options.length;i++){
+				if(typeof options[i] != 'object'){
+					allOptions.push( this._option(options[i]) );
+				} else {
+					newOptions = this._buildOptions(options[i]);
+					for(o=0;o<newOptions.length;o++){
+						allOptions.push(newOptions[o]);
+					}
+				}
+			}
+		} else {
+			if(Object.isUndefined(options.optGroup)){
+				for(x in options){
+					allOptions.push( this._option(x, options[x]) );
+				}
+			} else {
+				var attr = Object.extend({label: options.optGroup}, options.attr || {});
+				var group = new Element('optgroup', attr);
+				newOptions = this._buildOptions(options.options);
+				for(g=0;g<newOptions.length;g++){
+					group.insert(newOptions[g]);
+				}
+				allOptions.push(group);
+			}
+		}
+		return allOptions;		
+	},
+	
+	_option: function(name, attr){
+
+		var optionAttr;
+		if(Object.isUndefined(attr)){
+			optionAttr = {value: name};
+		} else if(Object.isArray(attr)){
+			optionAttr = {value:attr[0], selected:attr[1]};
+		} else if(typeof attr === 'object') {
+			optionAttr = attr;
+		} else {
+			if(typeof attr === 'boolean'){
+				optionAttr = {value: name, selected: attr}
+			} else {
+				optionAttr = {value: attr};
+			}
+		}
+
+		var option = new Element('option', optionAttr || {});
+		return option.update(name);
 	},
 	
 	submit: function(name, attr){
