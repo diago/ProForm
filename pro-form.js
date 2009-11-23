@@ -318,7 +318,8 @@ var ProForm = (function(){
 				delete attr.id;
 				
 				value = attr.value;
-				delete attr.id;
+				delete attr.value;
+				
 				this.ieSux.set(id, attr);
 				var input = document.createElement('<input type="'+type+'" name="'+name+'" id="'+id+'" value="'+value+'" />');
 			} else {
