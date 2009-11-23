@@ -1,5 +1,19 @@
 var ProForm = (function(){
 	
+	
+	/*
+	 * IE 6 & 7 cannot handle dynamic radio and checkboxes correctly.
+	 */
+	BROWSER_SUCKS = (function (){
+		var sucks = false;
+		var version_number;
+		if(Prototype.Browser.IE){
+			version_number = navigator.appVersion.match(/MSIE\s(\d+)/);
+			sucks = version_number[1] < 8;
+		}		
+		return sucks;
+	})();
+	
 	var ProForm = Class.create({});
 	
 	ProForm.options = {
@@ -21,6 +35,7 @@ var ProForm = (function(){
 			this.form = new Element('form', this.attr);
 			this.id = this.attr.id;
 			this.set = false;
+			this.ieSux = $H();
 		},
 		
 		/**
@@ -35,6 +50,16 @@ var ProForm = (function(){
 		 */
 		insert: function(elem){
 			$(elem).insert(this.form);
+			
+			if(BROWSER_SUCKS){
+				var e;
+				this.ieSux.each(function(pair){
+					e = $(pair.key);
+					for(x in pair.value){
+						e[x] = pair.value[x];
+					}
+				});
+			}
 			return this.form;
 		},
 		
@@ -260,11 +285,29 @@ var ProForm = (function(){
 		 * Used to generate input elements
 		 */
 		_input: function(type, name, attr){
-			
-			var input = new Element('input', this._buildAttr(name, Object.extend({
+			var attr = this._buildAttr(name, Object.extend({
 				type: type
-			}, attr || {})));
+			}, attr || {}));
 			
+			if(BROWSER_SUCKS){
+				var type, name, id, value;
+				
+				type = attr.type;
+				delete attr.type;
+				
+				name = attr.name;
+				delete attr.name;
+				
+				id = attr.id;
+				delete attr.id;
+				
+				value = attr.value;
+				delete attr.id;
+				this.ieSux.set(id, attr);
+				var input = document.createElement('<input type="'+type+'" name="'+name+'" id="'+id+'" value="'+value+'" />');
+			} else {
+				var input = new Element('input', attr);
+			}
 			return input;			
 		},
 		
