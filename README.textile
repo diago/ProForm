@@ -12,7 +12,8 @@ h2. Usage
                            .text('address')
                            .text('city')
                            .select('state', [{"Please Select": 0},"Virgina", "Cali"])
-                           .submit('submit');
+                           .submit('submit')
+                           .insert($$('body')[0]);
 </code></pre>
 
 This would generate the following HTML:
