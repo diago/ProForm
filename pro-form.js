@@ -155,10 +155,16 @@ var ProForm = (function(){
 		
 		textarea: function(name, attr){
 	
-			var attr = this._buildAttr(name, attr);
-			
-			var value = attr.value;
-			delete attr.value;
+			var attr;			
+			var value;
+			if(Object.isString(attr)){
+				value = attr;
+				attr = {};
+			} else {
+				attr = this._buildAttr(name, attr)
+				value = attr.value;
+				delete attr.value;
+			}
 			
 			var textarea = new Element('textarea', attr);
 			
