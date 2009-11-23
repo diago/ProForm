@@ -1,1 +1,38 @@
-h1. Pro-Form
+h1. ProForm
+
+h2. Description
+
+ProForm is geared towards generating forms quickly with as little typing as possible.  It requires the Prototype Javascript Framework version 1.6.1 which can be downloaded at http://www.prototypejs.org.
+
+h2. Usage
+
+<pre><code class="html">
+  var myForm = new ProForm('myForm')
+                           .text('name')
+                           .text('address')
+                           .text('city')
+                           .select('state', [{"Please Select": 0},"Virgina", "Cali"])
+                           .submit('submit');
+</code></pre>
+
+This would generate the following HTML:
+
+<pre><code class="html">
+<form id="contact_form" action="" method="post">
+    <label for="name">Name: </label>
+    <input type="text" id="name" name="name" value=""/>
+    <label for="address">Address: </label>
+    <input type="text" id="address" name="address" value=""/>
+    <label for="city">City: </label>
+    <input type="text" id="city" name="city" value=""/>
+    <label for="state">State: </label>
+    <select id="state" name="state">
+        <option value="0">Please Select</option>
+        <option value="Virgina">Virgina</option>
+        <option value="Cali">Cali</option>
+    </select>
+    <input type="submit" id="submit" name="submit" value="Submit"/>
+</form>
+</code></pre>
+
+A working example can be found "here":http://dev.outlandweb.com/pro-form/index.html
