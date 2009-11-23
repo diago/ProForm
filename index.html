@@ -4,17 +4,61 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <title>Form Filler</title>
+        <title>ProForm</title>
         <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/prototype/1.6.1/prototype.js"></script>
 		<script type="text/javascript" src="pro-form.js"></script>
 		<script type="text/javascript">
 
 			document.observe('dom:loaded', function(){
-			    var myForm = new ProForm('myForm').text('first_name');
 
-			    $$('body')[0].insert(myForm.get());
+			    //var tz = {"Please Choose": 0, "EST": [1, true], "CST": 2};
+			    var tz = [{optGroup: "America", options: ["EST", {"CET": true}, "PST"]}];
+			    //var tz = ['EST',{'PST': {id:"Car", value:"car", selected:true}}, 'EDT', 'CET'];
+			    var rides = ["bikes", {"cars": true, "trains": true}, "boats"];
+				
+			    var myForm = new ProForm('myForm')
+			    				.hidden('id', 35)
+			    				.text('name', 'Your Name')
+			    				.textarea('comments')
+			    				.fieldset('Your Rides')
+			    				.checkbox('rides', rides)
+			    				.checkbox('rides', {id:'planes', value:'planes', checked:true})
+			    				.fieldset(false)
+			    				.fieldset('Choose your sex:')
+			    				.radio('sex', ['male', 'female', {id:'herms', value:'hermis', label:'Not Sure?', checked:true}])
+								.fieldset(false)
+								.select('time_zone', tz, {multiple: true})
+								.submit('submit')
+								.reset('reset')
+								.insert($$('body')[0])
+								.observe('submit', function(ev){
+									ev.stop();
+								    alert($('myForm').serialize());
+								});
+
+			    var contact_form = new ProForm('contact_form')
+			                .text('name')
+			                .text('address')
+			                .text('city')
+			                .select('state', [{"Please Select": 0},"Virgina", "Cali"])
+			                .submit('submit')
+			                .insert($$('body')[0]);
+				//var myForm = new ProForm('myForm').radio('test', 'man').insert($$('body')[0]);
+
+				//alert($F('trains'));
+				
 			});
 		</script>
+		
+		<style type="text/css">
+		  form {
+		    padding: 2em;
+		  }
+		  
+		  input[type=text], select, textarea {
+		    display: block;
+		  }
+		</style>
     </head>
 	<body>
 
