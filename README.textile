@@ -40,5 +40,5 @@ A working example can be found "here":http://dev.outlandweb.com/pro-form/index.h
 
 h3. Credits
 
-Big thanks to wdw for giving me hand debugging IE7 issues.
+Big thanks to wdw for giving me a hand debugging IE7 issues.
 Big thanks to "gf3":http://www.github.com/gf3 for helping change the browser sniff to a feature test. 
