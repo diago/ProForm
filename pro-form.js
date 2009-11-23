@@ -1,20 +1,30 @@
-var ProForm = (function(){
-	
-	
+var ProForm = (function(){	
 	/*
 	 * IE 6 & 7 cannot handle dynamic radio and checkboxes correctly.
 	 */
 	BROWSER_SUCKS = (function (){
-		var sucks = false;
-		var version_number;
-		if(Prototype.Browser.IE){
-			version_number = navigator.appVersion.match(/MSIE\s(\d+)/);
-			sucks = version_number[1] < 8;
-		}		
-		return sucks;
+			var radio;
+			var test_value = "ProFormTestValue";
+			var root = document.documentElement;
+			var input = document.createElement('input');
+			input.setAttribute('name', 'test_radio');
+			input.setAttribute('id', 'test_radio');
+			input.setAttribute('value', test_value);
+			/* IE6 & 7 resets the value to "on" if type
+			 * is defined last
+			 */
+			input.setAttribute('type', 'radio');
+			
+			root.appendChild(input);
+		
+			radio = root.removeChild(input);
+
+			return !(radio.value === test_value);
 	})();
 	
 	var ProForm = Class.create({});
+	
+	ProForm.Version = '0.9.0';
 	
 	ProForm.options = {
 		labelMaker: function(str){
