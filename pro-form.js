@@ -181,9 +181,9 @@ var ProForm = (function(){
 			var value;
 			if(Object.isString(attr)){
 				value = attr;
-				attr = {};
+				attr = this._buildAttr(name, {});
 			} else {
-				attr = this._buildAttr(name, attr)
+				attr = this._buildAttr(name, attr);
 				value = attr.value;
 				delete attr.value;
 			}
