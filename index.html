@@ -28,8 +28,8 @@
 			    				.radio('sex', ['male', 'female', {id:'herms', value:'hermis', label:'Not Sure?', checked:true}])
 								.fieldset(false)
 								.select('time_zone', tz, {multiple: true})
-								.submit('submit')
-								.reset('reset')
+								.submit()
+								.reset()
 								.insert($$('body')[0])
 								.observe('submit', function(ev){
 									ev.stop();
@@ -41,7 +41,7 @@
 			                .text('address')
 			                .text('city')
 			                .select('state', [{"Please Select": 0},"Virgina", "Cali"])
-			                .submit('submit')
+			                .submit()
 			                .insert($$('body')[0]);
 				//var myForm = new ProForm('myForm').radio('test', 'man').insert($$('body')[0]);
 

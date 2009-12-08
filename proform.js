@@ -46,7 +46,7 @@ var ProForm = (function(){
 	
 	var ProForm = Class.create({});
 	
-	ProForm.Version = '0.9.0';
+	ProForm.Version = '0.10.0';
 	
 	ProForm.options = {
 		labelMaker: function(str){
@@ -210,11 +210,13 @@ var ProForm = (function(){
 		},
 		
 		submit: function(name, attr){
+			var name = name || 'submit';
 			this._insert(this._input('submit', name, this._buildButton(name, attr)));
 			return this;			
 		},
 		
 		reset: function(name, attr){
+			var name = name || 'reset';
 			this._insert(this._input('reset', name, this._buildButton(name, attr)));
 			return this;			
 		},
@@ -251,7 +253,7 @@ var ProForm = (function(){
 		_buildAttr: function(name, attr){
 			
 			var attr = Object.extend({
-				id: name,
+				id: this.id+'_'+name,
 				name: name,
 				value: '',
 				label: true
@@ -260,7 +262,7 @@ var ProForm = (function(){
 			var label = attr.label;
 			delete attr.label;
 			if(label){
-				this._label(attr.id, label);
+				this._label(attr.id.sub(this.id+'_', ''), label);
 			}
 			
 			return attr;
