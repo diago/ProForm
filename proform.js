@@ -46,7 +46,7 @@ var ProForm = (function(){
 	
 	var ProForm = Class.create({});
 	
-	ProForm.Version = '0.10.0';
+	ProForm.Version = '0.11.0';
 	
 	ProForm.options = {
 		labelMaker: function(str){
@@ -100,6 +100,14 @@ var ProForm = (function(){
 		 */
 		request: function(options){
 			this.sentRequest = this.form.request(options);
+			return this;
+		},
+		
+		/**
+		 * Allows adding other elements or html to the form
+		 */
+		add: function(info){
+			this.form.insert(info);
 			return this;
 		},
 		
