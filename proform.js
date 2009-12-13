@@ -46,7 +46,7 @@ var ProForm = (function(){
 	
 	var ProForm = Class.create({});
 	
-	ProForm.Version = '0.11.0';
+	ProForm.Version = '0.11.1';
 	
 	ProForm.options = {
 		labelMaker: function(str){
@@ -62,7 +62,9 @@ var ProForm = (function(){
 				method: 'post'
 			}, attr || {});
 			
-			this.options = Object.extend(ProForm.options, options || {});		
+			this.options = {};
+			Object.extend(this.options, ProForm.options);
+			Object.extend(this.options, options || {});
 			
 			this.form = new Element('form', this.attr);
 			this.id = this.attr.id;
