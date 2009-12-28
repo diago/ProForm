@@ -46,7 +46,7 @@ var ProForm = (function(){
 	
 	var ProForm = Class.create({});
 	
-	ProForm.Version = '0.11.1';
+	ProForm.Version = '0.11.2';
 	
 	ProForm.options = {
 		labelMaker: function(str){
@@ -295,7 +295,7 @@ var ProForm = (function(){
 			} else {
 				if(Object.isUndefined(options.optGroup)){
 					for(x in options){
-						allOptions.push( this._option(x, options[x]) );
+						allOptions.push( this._option(options[x], x) );
 					}
 				} else {
 					var attr = Object.extend({label: options.optGroup}, options.attr || {});
